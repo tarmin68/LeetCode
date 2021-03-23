@@ -1,3 +1,4 @@
+[Discussion Post (created on 23/2/2021 at 16:23)](https://leetcode.com/problems/3sum-with-multiplicity/solution/)  
 <h2>923. 3Sum With Multiplicity</h2><h3>Medium</h3><hr><div><p>Given an integer array <code>arr</code>, and an integer <code>target</code>, return the number of tuples <code>i, j, k</code> such that <code>i &lt; j &lt; k</code> and <code>arr[i] + arr[j] + arr[k] == target</code>.</p>
 
 <p>As the answer can be very large, return it <strong>modulo</strong> <code>10<sup>9</sup> + 7</code>.</p>
