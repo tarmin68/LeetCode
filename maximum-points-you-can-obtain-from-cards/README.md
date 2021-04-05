@@ -1,3 +1,4 @@
+[Discussion Post (created on 4/3/2021 at 22:27)](https://leetcode.com/problems/maximum-points-you-can-obtain-from-cards/discuss/?currentPage=1&orderBy=most_votes&query=)  
 <h2>1423. Maximum Points You Can Obtain from Cards</h2><h3>Medium</h3><hr><div><p>There are several cards&nbsp;<strong>arranged in a row</strong>, and each card has an associated number of points&nbsp;The points are given in the integer array&nbsp;<code>cardPoints</code>.</p>
 
 <p>In one step, you can take one card from the beginning or from the end of the row. You have to take exactly <code>k</code> cards.</p>
