@@ -1,18 +1,32 @@
 class Solution {
-    TreeMap<Integer, Integer> tMap = new TreeMap();
-    int sum = 0;
+    int[] sums;
 
     public Solution(int[] w) {
-        for(int i = 0; i < w.length; i++){
-            sum += w[i];
-            tMap.put(sum, i);
+        sums = new int[w.length];
+        sums[0] = w[0];
+        
+        for(int i = 1; i < w.length; i++){
+            sums[i] = w[i] + sums[i - 1];
         }
     }
     
     public int pickIndex() {
-        int rand = (int)(Math.random() * sum);
-        int key = tMap.ceilingKey(rand + 1);
-        return tMap.get(key);
+        double target = Math.random() * sums[sums.length - 1];
+        
+        int low = 0;
+        int high = sums.length;
+        
+        while(low < high){
+            int mid = low + (high - low) / 2;
+            if(target > sums[mid]){
+                low = mid + 1;
+            }
+            else{
+                high = mid;
+            }
+        }
+        
+        return low;
     }
 }
 
