@@ -1,3 +1,4 @@
+[Discussion Post (created on 26/3/2021 at 17:28)](https://leetcode.com/problems/move-zeroes/solution/)  
 <h2>283. Move Zeroes</h2><h3>Easy</h3><hr><div><p>Given an integer array <code>nums</code>, move all <code>0</code>'s to the end of it while maintaining the relative order of the non-zero elements.</p>
 
 <p><strong>Note</strong> that you must do this in-place without making a copy of the array.</p>
