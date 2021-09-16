@@ -16,22 +16,21 @@ class Solution {
         prev.next = head;
         
         int count = 0;
-        while(count < n && first != null){
+        while(count < n){
             first = first.next;
             count++;
         }
         
         while(first != null){
+            first = first.next;
             second = second.next;
             prev = prev.next;
-            first = first.next;
         }
         
-        if(prev.next == head){
-            return head.next;
-        }
-        
-        prev.next = second.next;
+        if(prev.next == head)
+            head = head.next;
+        else
+            prev.next = second.next;
         return head;
     }
 }
