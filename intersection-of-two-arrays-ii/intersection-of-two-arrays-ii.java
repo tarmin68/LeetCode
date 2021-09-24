@@ -4,20 +4,21 @@ class Solution {
         int[] freq2 = getFreq(nums2);
         
         int count = 0;
+        int[] comFreq = new int[1001];
         for(int i = 0; i < 1001; i++){
-            freq1[i] = Math.min(freq1[i], freq2[i]);
-            count += freq1[i];
+            comFreq[i] = Math.min(freq1[i], freq2[i]);
+            count += comFreq[i];
         }
         
-        int[] res = new int[count];
+        int[] result = new int[count];
         int k = 0;
         for(int i = 0; i < 1001; i++){
-            for(int j = 0; j < freq1[i]; j++){
-                res[k++] = i;
-            }
+            for(int j = 0; j < comFreq[i]; j++){
+                result[k++] = i;
+            } 
         }
         
-        return res;
+        return result;
     }
     
     public int[] getFreq(int[] nums){
