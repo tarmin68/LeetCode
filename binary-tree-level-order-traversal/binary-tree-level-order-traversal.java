@@ -16,7 +16,6 @@
 class Solution {
     public List<List<Integer>> levelOrder(TreeNode root) {
         List<List<Integer>> res = new ArrayList();
-        
         if(root == null)
             return res;
         
@@ -27,7 +26,7 @@ class Solution {
             int size = q.size();
             List<Integer> currLevel = new ArrayList();
             for(int i = 0; i < size; i++){
-                TreeNode currNode = q.poll();
+                TreeNode currNode = q.remove();
                 currLevel.add(currNode.val);
                 if(currNode.left != null)
                     q.add(currNode.left);
