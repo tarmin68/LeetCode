@@ -14,19 +14,25 @@
  * }
  */
 class Solution {
-    int maxDepth = Integer.MIN_VALUE;
     public int maxDepth(TreeNode root) {
-        getMaxDepth(root, 0);
-        return maxDepth;
-    }
-    
-    public void getMaxDepth(TreeNode root, int depth){
-        if(root == null){
-            maxDepth = Math.max(maxDepth, depth);
+        Queue<TreeNode> q = new LinkedList();
+        if(root == null)
+            return 0;
+        
+        q.add(root);
+        int level = 0;
+        while(!q.isEmpty()){
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                TreeNode currNode = q.remove();
+                if(currNode.left != null)
+                    q.add(currNode.left);
+                if(currNode.right != null)
+                    q.add(currNode.right);
+            }
+            level++;
         }
-        else{
-            getMaxDepth(root.left, depth + 1);
-            getMaxDepth(root.right, depth + 1);
-        }
+        
+        return level;
     }
 }
