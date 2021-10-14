@@ -1,25 +1,23 @@
 class Solution {
-    int[] sqNums;
+    Integer[] nums;
     public int numSquares(int n) {
-        sqNums = new int[n + 1];
-        
-        return getNumSq(n);
+        nums = new Integer[n + 1];
+        return getNumSquares(n);
     }
     
-    public int getNumSq(int n){
-        if(n <= 1)
+    public int getNumSquares(int n){
+        if(n == 0 || n == 1)
             return n;
         
-        if(sqNums[n] != 0)
-            return sqNums[n];
+        if(nums[n] != null)
+            return nums[n];
         
-        int sqRoot = (int) Math.sqrt(n);
         int min = Integer.MAX_VALUE;
-        for(int i = 1; i <= sqRoot; i++){
-            min = Math.min(min, 1 + getNumSq(n - i * i));
+        for(int i = 1; i * i <= n; i++){
+            min = Math.min(min, 1 + getNumSquares(n - i * i));
         }
         
-        sqNums[n] = min;
-        return min;
+        nums[n] = min;
+        return nums[n];
     }
 }
