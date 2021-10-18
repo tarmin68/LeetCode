@@ -1,17 +1,32 @@
 class Solution {
+    Integer[][] maxes;
     public int maxProfit(int[] prices) {
-        int n = prices.length;
-        if(n < 2)
-            return 0;
-        
-        // 0: canBuy 1:CanSell
-        int[][] maxProfit = new int[n + 2][2];
-        for(int i = n - 1; i >= 0; i--){
-            maxProfit[i][0] = Math.max(maxProfit[i + 1][1] - prices[i], maxProfit[i + 1][0]);
-            maxProfit[i][1] = Math.max(maxProfit[i + 2][0] + prices[i], maxProfit[i + 1][1]);
-        }
-        
-        return maxProfit[0][0];
+        maxes = new Integer[prices.length][2];
+        return getMax(prices, 0, true);
     }
     
+    public int getMax(int[] prices, int day, boolean canBuy){
+        if(day >= prices.length)
+            return 0;
+        
+        if(canBuy && maxes[day][1] != null)
+            return maxes[day][1];
+        if(!canBuy && maxes[day][0] != null)
+            return maxes[day][0];
+        
+        if(canBuy){
+            int c1 = - prices[day] + getMax(prices, day + 1, false);
+            
+            int c2 = getMax(prices, day + 1, true);
+            
+            return maxes[day][1] = Math.max(c1, c2);
+        }
+        else{
+            int c1 = prices[day] + getMax(prices, day + 2, true);
+            
+            int c2 = getMax(prices, day + 1, false);
+            
+            return maxes[day][0] = Math.max(c1, c2);
+        }
+    }
 }
