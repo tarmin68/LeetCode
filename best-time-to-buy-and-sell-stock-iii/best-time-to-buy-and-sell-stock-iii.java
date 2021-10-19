@@ -1,32 +1,18 @@
 class Solution {
-    Integer[][][] maxes;
-    
     public int maxProfit(int[] prices) {
-        maxes = new Integer[prices.length][2][5];
+        int n = prices.length;
+        int[][] profits = new int[n + 1][4];
         
-        return getMax(prices, 0, 1, 0);
-    }
-    
-    public int getMax(int[] prices, int day, int canBuy, int buyCount){
-        if(day >= prices.length)
-            return 0;
+        profits[0][0] = Integer.MIN_VALUE;
+        profits[0][2] = Integer.MIN_VALUE;
         
-        if(maxes[day][canBuy][buyCount] != null)
-            return maxes[day][canBuy][buyCount];
-        
-        if(canBuy == 1 && buyCount < 3){
-            int c1 = - prices[day] + getMax(prices, day + 1, 0, buyCount + 1);
-            int c2 = getMax(prices, day + 1, 1, buyCount);
-            
-            return maxes[day][canBuy][buyCount] = Math.max(c1, c2);
-        }
-        else if(canBuy == 0 && buyCount < 4){
-            int c1 = prices[day] + getMax(prices, day + 1, 1, buyCount + 1);
-            int c2 = getMax(prices, day + 1, 0, buyCount);
-            
-            return maxes[day][canBuy][buyCount] = Math.max(c1, c2);
+        for(int i = 1; i <= n; i++){
+            profits[i][0] = Math.max(profits[i - 1][0], - prices[i - 1]);
+            profits[i][1] = Math.max(profits[i - 1][1], profits[i - 1][0] + prices[i - 1]);
+            profits[i][2] = Math.max(profits[i - 1][2], profits[i - 1][1] - prices[i - 1]);
+            profits[i][3] = Math.max(profits[i - 1][3], profits[i - 1][2] + prices[i - 1]);
         }
         
-        return 0;
+        return Math.max(0, Math.max(profits[n][1], profits[n][3]));
     }
 }
