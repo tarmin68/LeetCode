@@ -1,31 +1,44 @@
 class Solution {
     public boolean checkInclusion(String s1, String s2) {
-        if(s2.length() < s1.length()) 
-            return false;
-        
-        int[] freq1 = getFreq(s1);
-        int[] freq2 = getFreq(s2.substring(0, s1.length()));
-        
-        for(int i = 0; i + s1.length() < s2.length(); i++){
-            if(Arrays.equals(freq1, freq2))
-                return true;
-            freq2[s2.charAt(i) - 'a']--;
-            freq2[s2.charAt(i + s1.length()) - 'a']++;
+        HashSet<ArrayList<Integer>> charCounts = new HashSet();
+        ArrayList<Integer> charCount1 = new ArrayList();
+        ArrayList<Integer> charCount2 = new ArrayList();
+        for(int i = 0; i < 26; i++){
+            charCount1.add(0);
+            charCount2.add(0);
         }
         
-        if(Arrays.equals(freq1, freq2))
-                return true;
+        for(int i = 0; i < s1.length(); i++){
+            int prevCount = charCount1.get(s1.charAt(i) - 'a');
+            charCount1.set(s1.charAt(i) - 'a', prevCount + 1);
+        }
         
+        charCounts.add((ArrayList<Integer>) charCount2.clone());
+        for(int i = 0; i < s2.length(); i++){
+            int prevCount = charCount2.get(s2.charAt(i) - 'a');
+            charCount2.set(s2.charAt(i) - 'a', prevCount + 1);
+            
+            ArrayList<Integer> diff = getDiff(charCount2, charCount1);
+            if(charCounts.contains(diff)){
+                return true;
+            }
+            charCounts.add((ArrayList<Integer>) charCount2.clone());
+        }
+
         return false;
     }
     
-    public int[] getFreq(String word){
-        int[] freq = new int[28];
-        
-        for(int i = 0; i < word.length(); i++){
-            freq[word.charAt(i) - 'a']++;
+    
+    public ArrayList<Integer> getDiff(ArrayList<Integer> charCount1, ArrayList<Integer> charCount2){
+        ArrayList<Integer> diff = new ArrayList();
+        for(int i = 0; i < 26; i++){
+            diff.add(0);
         }
         
-        return freq;
+        for(int i = 0; i < 26; i++){
+            diff.set(i, charCount1.get(i) - charCount2.get(i));
+        }
+        
+        return diff;
     }
 }
