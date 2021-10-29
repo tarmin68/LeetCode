@@ -3,45 +3,52 @@ class Solution {
         int m = grid.length;
         int n = grid[0].length;
         int freshCount = 0;
+        Queue<Pair<Integer, Integer>> q = new ArrayDeque();
         
         for(int i = 0; i < m; i++){
             for(int j = 0; j < n; j++){
                 if(grid[i][j] == 1)
                     freshCount++;
+                if(grid[i][j] == 2)
+                    q.offer(new Pair(i, j));
             }
         }
         
-        for(int k = 0; k < m * n; k++){
+        int level = 0;
+        while(!q.isEmpty()){
             if(freshCount == 0)
-                return k;
-            
-            int[][] temp = new int[m][n];
-            for(int i = 0; i < m; i++){
-                temp[i] = grid[i].clone();
-            }
-            
-            for(int i = 0; i < m; i++){
-                for(int j = 0; j < n; j++){
-                    if(grid[i][j] == 1){
-                        if(i > 0 && grid[i - 1][j] == 2)
-                            temp[i][j] = 2;
-                        if(j > 0 && grid[i][j - 1] == 2)
-                            temp[i][j] = 2;
-                        if(i < m - 1 && grid[i + 1][j] == 2)
-                            temp[i][j] = 2;
-                        if(j < n - 1 && grid[i][j + 1] == 2)
-                            temp[i][j] = 2;
-                        if(temp[i][j] == 2)
-                            freshCount--;
-                    }
+                return level;
+            int size = q.size();
+            for(int i = 0; i < size; i++){
+                Pair<Integer, Integer> curr = q.poll();
+                int r = curr.getKey();
+                int c = curr.getValue();
+                if(r > 0 && grid[r - 1][c] == 1){
+                    grid[r - 1][c] = 2;
+                    freshCount--;
+                    q.offer(new Pair(r - 1, c));
+                }
+                if(r < m - 1 && grid[r + 1][c] == 1){
+                    grid[r + 1][c] = 2;
+                    freshCount--;
+                    q.offer(new Pair(r + 1, c));
+                }
+                if(c > 0 && grid[r][c - 1] == 1){
+                    grid[r][c - 1] = 2;
+                    freshCount--;
+                    q.offer(new Pair(r, c - 1));
+                }
+                if(c < n - 1 && grid[r][c + 1] == 1){
+                    grid[r][c + 1] = 2;
+                    freshCount--;
+                    q.offer(new Pair(r, c + 1));
                 }
             }
-            grid = new int[m][n];
-            for(int i = 0; i < m; i++){
-                grid[i] = temp[i].clone();
-            }
+            level++;
         }
         
+        if(freshCount == 0)
+            return level;
         return -1;
     }
 }
