@@ -1,12 +1,23 @@
 class Solution {
     public int arrangeCoins(int n) {
-        int count = 0;
+        long l = 1;
+        long h = n;
         
-        for(int i = 1; i <= n; i++){
-            count++;
-            n -= i;
+        long ans = 1;
+        while(l <= h){
+            long mid = (h - l) / 2 + l;
+            long curr = mid * (mid + 1) / 2;
+            if(curr == n)
+                return (int) mid;
+            else if (curr <= n){
+                ans = mid;
+                l = mid + 1;
+            }
+            else{
+                h = mid - 1;
+            }
         }
         
-        return count;
+        return (int) ans;
     }
 }
