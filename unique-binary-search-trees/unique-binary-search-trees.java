@@ -1,27 +1,23 @@
 class Solution {
-    HashMap<Pair<Integer, Integer>, Integer> myMap;
+    Integer[] counts;
+    
     public int numTrees(int n) {
-        myMap = new HashMap();
-        return getNum(1, n);
+        counts = new Integer[n + 1];
+        counts[0] = 1;
+        counts[1] = 1;
+        
+        return getCounts(n);
     }
     
-    public int getNum(int l, int r){
-        if(r < l)
-            return 1;
-        if(l == r)
-            return 1;
+    public int getCounts(int num){
+        if(counts[num] != null)
+            return counts[num];
         
-        if(myMap.get(new Pair(l, r)) != null)
-            return myMap.get(new Pair(l, r));
-        
-        int count = 0;
-        for(int i = l; i <= r; i++){
-            int leftCount = getNum(l, i - 1);
-            int rightCount = getNum(i + 1, r);
-            count += leftCount * rightCount;
+        int res = 0;
+        for(int i = 1; i <= num; i++){
+            res += (getCounts(i - 1) * getCounts(num - i));
         }
         
-        myMap.put(new Pair(l, r), count);
-        return count;
+        return counts[num] = res;
     }
 }
