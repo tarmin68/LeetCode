@@ -1,26 +1,15 @@
 class Solution {
-    Integer[][] allMax;
     public int rob(int[] nums) {
-        allMax = new Integer[nums.length][2];
-        return getMax(nums, 0, 0);
-    }
-    
-    public int getMax(int[] nums, int idx, int preRobbed){
-        if(idx >= nums.length)
-            return 0;
+        int[][] maxRobbed = new int[nums.length][2];
         
-        if(allMax[idx][preRobbed] != null)
-            return allMax[idx][preRobbed];
+        maxRobbed[0][0] = 0;
+        maxRobbed[0][1] = nums[0];
         
-        if(preRobbed == 1){
-            int max = getMax(nums, idx + 1, 0);
-            allMax[idx][1] = max;
-            return max;
+        for(int i = 1; i < nums.length; i++){
+            maxRobbed[i][0] = Math.max(maxRobbed[i - 1][1], maxRobbed[i - 1][0]);
+            maxRobbed[i][1] = maxRobbed[i - 1][0] + nums[i];
         }
-        else{
-            int max = Math.max(getMax(nums, idx + 1, 1) + nums[idx], getMax(nums, idx + 1, 0));
-            allMax[idx][0] = max;
-            return max;
-        }
+        
+        return Math.max(maxRobbed[nums.length - 1][0], maxRobbed[nums.length - 1][1]);
     }
 }
