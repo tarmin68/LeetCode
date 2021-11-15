@@ -1,20 +1,17 @@
 class Solution {
-    public int[] dailyTemperatures(int[] T) {
-        int[] ans = new int[T.length];
-        HashMap<Integer, Integer> tempDay = new HashMap();
+    public int[] dailyTemperatures(int[] temperatures) {
+        int n = temperatures.length;
+        int[] res = new int[n];
+        ArrayDeque<Pair<Integer, Integer>> s = new ArrayDeque();
         
-        for(int i = T.length - 1; i >= 0; i--){
-            tempDay.put(T[i], i);
-            int min = T.length;
-            for(int j = T[i] + 1; j <= 100; j++){
-                if(tempDay.get(j) != null){
-                    min = Math.min(min, tempDay.get(j));
-                }
-            }
-            if(min != T.length)
-                ans[i] = min - i;
+        for(int i = n - 1; i >= 0; i--){
+            while(!s.isEmpty() && s.peek().getKey() <= temperatures[i])
+                    s.poll();
+            if(!s.isEmpty())
+                res[i] = s.peek().getValue() - i;
+            s.push(new Pair<Integer,Integer>(temperatures[i], i));
         }
         
-        return ans;
+        return res;
     }
 }
