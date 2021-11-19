@@ -1,35 +1,20 @@
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
-        HashSet<Pair<Integer, Integer>> allPairs = new HashSet();
-        
-        Arrays.sort(nums);
+        HashSet<Integer> allNums = new HashSet();
+        HashSet<List<Integer>> allTriplets = new HashSet();
         
         for(int i = 0; i < nums.length; i++){
-            int l = i + 1;
-            int r = nums.length - 1;
-            
-            while(l < r){
-                if(nums[i] + nums[l] + nums[r] == 0){
-                    allPairs.add(new Pair(nums[i], nums[l]));
-                    l++;
-                    r--;
+            for(int j = i + 1; j < nums.length; j++){
+                int target = 0 - nums[i] - nums[j];
+                if(allNums.contains(target)){
+                    List<Integer> newTriplet = Arrays.asList(nums[i], nums[j], target);
+                    Collections.sort(newTriplet);
+                    allTriplets.add(newTriplet);
                 }
-                else if(nums[i] + nums[l] + nums[r] < 0)
-                    l++;
-                else
-                    r--;
             }
+            allNums.add(nums[i]);
         }
         
-        List<List<Integer>> res = new ArrayList();
-        for(Pair<Integer, Integer> currPair : allPairs){
-            int first = currPair.getKey();
-            int second = currPair.getValue();
-            int third = 0 - first - second;
-            List<Integer> currTriplet = Arrays.asList(new Integer[]{first, second, third});
-            res.add(currTriplet);
-        }
-        
-        return res;
+        return new ArrayList<List<Integer>>(allTriplets);
     }
 }
