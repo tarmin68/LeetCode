@@ -1,14 +1,12 @@
 class Solution {
-    boolean[][] connected;
     public int numIslands(char[][] grid) {
-        connected = new boolean[grid.length][grid[0].length];
-        
         int count = 0;
+        
         for(int i = 0; i < grid.length; i++){
             for(int j = 0; j < grid[0].length; j++){
-                if(grid[i][j] == '1' && !connected[i][j]){
+                if(grid[i][j] == '1'){
                     count++;
-                    bfs(i, j, grid);
+                    bfs(grid, i, j);
                 }
             }
         }
@@ -16,32 +14,30 @@ class Solution {
         return count;
     }
     
-    public void bfs(int i, int j, char[][] grid){
+    public void bfs(char[][] grid, int r, int c){
         Queue<Pair<Integer, Integer>> q = new LinkedList();
-        
-        q.add(new Pair(i, j));           
-        connected[i][j] = true;
+        q.add(new Pair(r, c));
+        grid[r][c] = '0';
         
         while(!q.isEmpty()){
-            Pair<Integer, Integer> currPair = q.poll();
-            int r = currPair.getKey();
-            int c = currPair.getValue();
-            
-            if(r > 0 && grid[r - 1][c] == '1' && !connected[r - 1][c]){
-                q.add(new Pair(r - 1, c));
-                connected[r - 1][c] = true;
+            Pair<Integer, Integer> currCell = q.remove();
+            int row = currCell.getKey();
+            int col = currCell.getValue();
+            if(row > 0 && grid[row - 1][col] == '1'){
+                q.add(new Pair(row - 1, col));
+                grid[row - 1][col] = '0';
             }
-            if(c > 0 && grid[r][c - 1] == '1' && !connected[r][c - 1]){
-                q.add(new Pair(r, c - 1));
-                connected[r][c - 1] = true;
+            if(row < grid.length - 1 && grid[row + 1][col] == '1'){
+                q.add(new Pair(row + 1, col));
+                grid[row + 1][col] = '0';
             }
-            if(r < grid.length - 1 && grid[r + 1][c] == '1' && !connected[r + 1][c]){
-                q.add(new Pair(r + 1, c));
-                connected[r + 1][c] = true;
+            if(col > 0 && grid[row][col - 1] == '1'){
+                q.add(new Pair(row, col - 1));
+                grid[row][col - 1] = '0';
             }
-            if(c < grid[0].length - 1 && grid[r][c + 1] == '1' && !connected[r][c + 1]){
-                q.add(new Pair(r, c + 1));
-                connected[r][c + 1] = true;
+            if(col < grid[0].length - 1 && grid[row][col + 1] == '1'){
+                q.add(new Pair(row, col + 1));
+                grid[row][col + 1] = '0';
             }
         }
     }
