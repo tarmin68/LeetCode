@@ -1,51 +1,62 @@
 class Solution {
-    boolean[][] visited;
+    char[][] board;
     int m;
     int n;
     
     public void solve(char[][] board) {
-        m = board.length;
-        n = board[0].length;
-        visited = new boolean[m][n];
+        this.board = board;
+        this.m = board.length;
+        this.n = board[0].length;
+        
+        for(int i = 0; i < n; i++){
+            if(board[0][i] == 'O')
+                checkOs(0, i);
+            if(board[m - 1][i] == 'O')
+                checkOs(m - 1, i);
+        }
+        
+        for(int i = 0; i < m; i++){
+            if(board[i][0] == 'O')
+                checkOs(i, 0);
+            if(board[i][n - 1] == 'O')
+                checkOs(i, n - 1);
+        }
         
         for(int i = 0; i < m; i++){
             for(int j = 0; j < n; j++){
-                if(!visited[i][j] && board[i][j] == 'O')
-                    captureRegions(board, i, j);
+                if(board[i][j] == 'O')
+                    board[i][j] = 'X';
+                else if(board[i][j] == 'N')
+                    board[i][j] = 'O';
             }
         }
     }
     
-    public void captureRegions(char[][] board, int r, int c){
-        Queue<Pair<Integer, Integer>> q = new ArrayDeque();
-        Set<Pair<Integer, Integer>> s = new HashSet();
-        boolean isCaptured = true;
+    public void checkOs(int r, int c){
+        Queue<int[]> q = new LinkedList();
+        q.add(new int[]{r, c});
+        board[r][c] = 'N';
         
-        q.add(new Pair<Integer, Integer>(r, c));
         while(!q.isEmpty()){
-            Pair<Integer, Integer> currPair = q.poll();
-            int row = currPair.getKey();
-            int col = currPair.getValue();
-            if(row < 0 || row >= m || col < 0 || col >= n || board[row][col] != 'O' || visited[row][col])
-                continue;
-            if(row == 0 || row == m - 1 || col == 0 || col == n - 1){
-                isCaptured = false;
+            int[] currCell = q.remove();
+            int currR = currCell[0];
+            int currC = currCell[1];
+            
+            if(currR > 0 && board[currR - 1][currC] == 'O'){
+                q.add(new int[]{currR - 1, currC});
+                board[currR - 1][currC] = 'N';
             }
-            else{
-                s.add(new Pair(row, col));
+            if(currR < m - 1 && board[currR + 1][currC] == 'O'){
+                q.add(new int[]{currR + 1, currC});
+                board[currR + 1][currC] = 'N';
             }
-            visited[row][col] = true;
-            q.add(new Pair(row + 1, col));
-            q.add(new Pair(row - 1, col));
-            q.add(new Pair(row, col + 1));
-            q.add(new Pair(row, col - 1));
-        }
-        
-        if(isCaptured){
-            for(Pair<Integer, Integer> curr : s){
-                int row = curr.getKey();
-                int col = curr.getValue();
-                board[row][col] = 'X';
+            if(currC > 0 && board[currR][currC - 1] == 'O'){
+                q.add(new int[]{currR, currC - 1});
+                board[currR][currC - 1] = 'N';
+            }
+            if(currC < n - 1 && board[currR][currC + 1] == 'O'){
+                q.add(new int[]{currR, currC + 1});
+                board[currR][currC + 1] = 'N';
             }
         }
     }
