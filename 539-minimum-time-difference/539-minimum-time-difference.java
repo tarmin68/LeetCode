@@ -7,15 +7,13 @@ class Solution {
             allMins[i] = getMin(timePoints.get(i));
         }
         
+        Arrays.sort(allMins);
         int min = totalMins;
-        for(int i = 0; i < allMins.length; i++){
-            for(int j = i + 1; j < allMins.length; j++){
-                min = Math.min(min, Math.abs(allMins[i] - allMins[j]));
-                min = Math.min(min, Math.abs(allMins[i] + totalMins - allMins[j]));
-                min = Math.min(min, Math.abs(allMins[i] - totalMins - allMins[j]));
-            }
+        for(int i = 0; i < allMins.length - 1; i++){
+            min = Math.min(min, allMins[i + 1] - allMins[i]);
         }
         
+        min = Math.min(min, allMins[0] + totalMins - allMins[allMins.length - 1]);
         return min;
     }
     
