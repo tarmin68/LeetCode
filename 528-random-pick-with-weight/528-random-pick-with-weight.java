@@ -1,20 +1,18 @@
 class Solution {
     int low = 0;
-    HashMap<Integer, Integer> rangeMap = new HashMap();
-    TreeSet<Integer> rangeSet = new TreeSet();
+    TreeMap<Integer, Integer> rangeMap = new TreeMap();
     Random rand = new Random();
 
     public Solution(int[] w) {
         for(int i = 0; i < w.length; i++){
             rangeMap.put(low, i);
-            rangeSet.add(low);
             low += w[i];
         }
     }
     
     public int pickIndex() {
         int nextInt = rand.nextInt(low);
-        int range = rangeSet.floor(nextInt);
+        int range = rangeMap.floorKey(nextInt);
         return rangeMap.get(range);
     }
 }
