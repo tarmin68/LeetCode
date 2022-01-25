@@ -1,40 +1,52 @@
 class TimeMap {
-    HashMap<String, ArrayList<Pair<Integer, String>>> keyMap;
-    /** Initialize your data structure here. */
+    HashMap<String, ArrayList<Integer>> timeMap;
+    HashMap<String, ArrayList<String>> valueMap;
+    
+
     public TimeMap() {
-        keyMap = new HashMap();
+        timeMap = new HashMap();
+        valueMap = new HashMap();
     }
     
     public void set(String key, String value, int timestamp) {
-        keyMap.putIfAbsent(key, new ArrayList<Pair<Integer, String>>());
-        keyMap.get(key).add(new Pair(timestamp, value));
+        timeMap.putIfAbsent(key, new ArrayList<Integer>());
+        timeMap.get(key).add(timestamp);
+        valueMap.putIfAbsent(key, new ArrayList<String>());
+        valueMap.get(key).add(value);
     }
     
     public String get(String key, int timestamp) {
-        if(keyMap.get(key) != null){
-            ArrayList<Pair<Integer, String>> currList = keyMap.get(key);
-            int l = 0;
-            int r = currList.size() - 1;
-            String res = "";
-            while(l <= r){
-                int mid = (l + r) / 2;
-                if(currList.get(mid).getKey() == timestamp)
-                    return currList.get(mid).getValue();
-                else if(currList.get(mid).getKey() > timestamp)
-                    r = mid - 1;
-                else{
-                    res = currList.get(mid).getValue();
-                    l = mid + 1;
-                }
-            }
-            
-            return res;
-        }
-        else{
+        int idx = findIdx(key, timestamp);
+        if(idx == -1)
             return "";
-        }
+        
+        return valueMap.get(key).get(idx);
     }
     
+    public int findIdx(String key, int timestamp){
+        if(timeMap.get(key) == null)
+            return -1;
+        
+        ArrayList<Integer> times = timeMap.get(key);
+        int lo = 0;
+        int hi = times.size() - 1;
+        int ans = -1;
+        
+        while(lo <= hi){
+            int mid = (lo + hi) / 2;
+            if(times.get(mid) == timestamp)
+                return mid;
+            else if(times.get(mid) < timestamp){
+                ans = mid;
+                lo = mid + 1;
+            }
+            else{
+                hi = mid - 1;
+            }
+        }
+        
+        return ans;
+    }
 }
 
 /**
