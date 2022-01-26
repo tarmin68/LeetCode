@@ -1,34 +1,28 @@
 class SnapshotArray {
-    int snap_id;
-    int length;
-    HashMap<Integer, TreeMap<Integer, Integer>> idxMap;
+    int snapId;
+    HashMap<Pair<Integer, Integer>, Integer> myMap;
 
     public SnapshotArray(int length) {
-        snap_id = 0;
-        this.length = length;
-        idxMap = new HashMap();
+        snapId = 0;
+        myMap = new HashMap();
     }
     
     public void set(int index, int val) {
-        idxMap.putIfAbsent(index, new TreeMap());
-        idxMap.get(index).put(snap_id, val);
+        myMap.put(new Pair(snapId, index), val);
     }
     
     public int snap() {
-        snap_id++;
-        return snap_id - 1;
+        snapId++;
+        return snapId - 1;
     }
     
     public int get(int index, int snap_id) {
-        if(idxMap.get(index) == null)
+        while(snap_id >= 0 && myMap.get(new Pair(snap_id, index)) == null){
+            snap_id--;
+        }
+        if(snap_id == -1)
             return 0;
-        
-        TreeMap<Integer, Integer> currMap = idxMap.get(index);
-        if(currMap.floorKey(snap_id) == null)
-            return 0;
-        
-        int floorKey = currMap.floorKey(snap_id);
-        return currMap.get(floorKey);
+        return myMap.get(new Pair(snap_id, index));
     }
 }
 
